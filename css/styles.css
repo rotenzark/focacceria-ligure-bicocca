@@ -1,0 +1,275 @@
+/* Focacceria Ligure e Non Solo · Bicocca — «E non solo…»
+   La pagina completa più volte la frase scritta sulla loro tenda. Gesto-firma: le FOSSETTE
+   (i tre puntini dell'ellissi sono tre fossette di focaccia, premute con le dita).
+   Palette dalle loro foto: terracotta delle pareti, legno scuro del banco, oro della focaccia,
+   olio, crema; tricolore delle foglie del logo nei tre punti. */
+
+/* ── reset tecnico (PLUMBING) ── */
+[hidden]{display:none !important}
+img{max-width:100%;height:auto}
+*,*::before,*::after{box-sizing:border-box}
+
+:root{
+  --terra:#B4531E; --terra-scura:#8E3E14; --forno:#2B1B14; --focaccia:#E3B65A; --crosta:#C98A3A;
+  --olio:#F3E6B8; --crema:#F7EFDF; --carta:#FBF6EA; --basilico:#4F7A3A; --pomodoro:#C4342A; --testo:#241A14;
+  --verde:#2E8B57; --rosso:#C4342A;
+  --f-tit:'Alumni Sans','Arial Narrow',Impact,sans-serif;
+  --f-cor:'Courgette','Brush Script MT',cursive;
+  --f-txt:'Nunito',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --lato:clamp(1.2rem,6vw,6rem);
+  --testata:66px;
+}
+html{scroll-behavior:smooth;scroll-padding-top:calc(var(--testata) + 8px)}
+body{margin:0;font-family:var(--f-txt);font-size:1.12rem;line-height:1.55;color:var(--testo);background:var(--crema);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+img{display:block}
+a{color:inherit}
+h1,h2,h3,h4{font-family:var(--f-tit);font-weight:800;text-transform:uppercase;line-height:.9;margin:0;letter-spacing:.005em}
+h2{font-size:clamp(3.2rem,9vw,8rem);font-weight:900}
+h3{font-size:clamp(1.9rem,4vw,3rem)}
+p{margin:0 0 1em}
+:focus-visible{outline:3px solid var(--focaccia);outline-offset:3px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+
+/* reveal: stato iniziale solo dietro .js (anti-flash) */
+.js .reveal{opacity:0}
+.js .reveal.in-view{opacity:1}
+html:not(.js) .reveal{opacity:1}
+
+/* ── i tre punti: le fossette ── */
+.puntini{display:inline-flex;align-items:center;gap:.28em;vertical-align:middle}
+.puntini i{display:block;width:.55em;height:.55em;border-radius:50%;background:var(--verde);box-shadow:inset 0 .12em .2em rgba(0,0,0,.28),inset 0 -.06em .08em rgba(255,255,255,.35)}
+.puntini i:nth-child(2){background:var(--crema)}
+.puntini i:nth-child(3){background:var(--rosso)}
+/* le fossette "premute": stato che il JS raggiunge; senza JS sono già così */
+.corsivo{font-family:var(--f-cor);font-weight:400;text-transform:none;letter-spacing:0}
+
+/* ── bottoni ── */
+.bottone{display:inline-flex;align-items:center;justify-content:center;gap:.5em;padding:.55em 1.15em .5em;font-family:var(--f-tit);font-weight:700;font-size:1.35rem;letter-spacing:.06em;text-transform:uppercase;text-decoration:none;border:2px solid transparent;border-radius:999px;line-height:1;transition:transform .2s,background-color .2s,color .2s}
+.bottone:hover{transform:translateY(-2px)}
+.bottone--grande{font-size:1.6rem;padding:.6em 1.25em .55em}
+.bottone--terra{background:var(--terra);color:#fff}
+.bottone--terra:hover{background:var(--terra-scura)}
+.bottone--forno{background:var(--forno);color:var(--crema)}
+.bottone--forno:hover{background:#000}
+.bottone--filo{border-color:var(--forno);color:var(--forno)}
+.bottone--filo:hover{background:var(--forno);color:var(--crema)}
+.bottone--filo-chiaro{border-color:var(--crema);color:var(--crema)}
+.bottone--filo-chiaro:hover{background:var(--crema);color:var(--forno)}
+.bottone--oro{background:var(--focaccia);color:var(--forno)}
+.bottone--oro:hover{background:#f0c86c}
+
+/* ── intro ── */
+.intro{position:fixed;inset:0;z-index:300;display:grid;place-content:center;justify-items:center;gap:1.2rem;background:var(--terra);color:var(--crema);transition:opacity .6s,visibility .6s}
+.intro.hide{opacity:0;visibility:hidden}
+.intro__punti{display:flex;gap:1.1rem}
+.intro__punti i{display:block;width:clamp(28px,5vw,52px);height:clamp(28px,5vw,52px);border-radius:50%;background:var(--verde);box-shadow:inset 0 6px 10px rgba(0,0,0,.3);animation:premi .9s cubic-bezier(.2,.8,.2,1) both}
+.intro__punti i:nth-child(2){background:var(--crema);animation-delay:.25s}
+.intro__punti i:nth-child(3){background:var(--rosso);animation-delay:.5s}
+@keyframes premi{0%{transform:scale(0)}60%{transform:scale(1.18)}100%{transform:scale(1)}}
+.intro__t{font-family:var(--f-cor);font-size:clamp(2rem,6vw,4rem);line-height:1;animation:appari .6s .8s both}
+@keyframes appari{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.intro__skip{margin-top:1rem;background:none;border:0;color:var(--crema);opacity:.75;font:inherit;font-size:.95rem;letter-spacing:.2em;text-transform:uppercase;cursor:pointer}
+
+/* ── testata (fondo pieno, NIENTE backdrop-filter) ── */
+.testata{position:sticky;top:0;z-index:90;display:flex;align-items:center;justify-content:space-between;gap:1rem;height:var(--testata);padding:0 clamp(1rem,4vw,3rem);background:rgba(43,27,20,.97);color:var(--crema)}
+.marchio{display:inline-flex;align-items:baseline;gap:.5rem;text-decoration:none;line-height:1}
+.marchio__n{font-family:var(--f-tit);font-weight:800;font-size:1.65rem;text-transform:uppercase;letter-spacing:.03em;white-space:nowrap}
+.marchio__c{font-family:var(--f-cor);font-size:1.1rem;color:var(--focaccia);white-space:nowrap}
+.nav{display:flex;gap:clamp(1rem,2.2vw,2.2rem)}
+.nav a{font-family:var(--f-tit);font-weight:700;font-size:1.3rem;letter-spacing:.06em;text-transform:uppercase;text-decoration:none;padding:.2em 0;border-bottom:3px solid transparent}
+.nav a:hover{border-bottom-color:var(--focaccia)}
+.testata__coda{display:flex;align-items:center;gap:.8rem}
+.lingue{display:flex;border:1.5px solid rgba(247,239,223,.45);border-radius:999px;overflow:hidden}
+.lingue button{background:none;border:0;color:var(--crema);font-family:var(--f-tit);font-weight:700;font-size:1rem;letter-spacing:.08em;padding:.3em .6em .22em;cursor:pointer;opacity:.65}
+.lingue button.is-on{background:var(--crema);color:var(--forno);opacity:1}
+.burger{display:none;position:relative;z-index:96;width:44px;height:44px;padding:0;background:none;border:0;cursor:pointer}
+.burger span{display:block;width:26px;height:3px;margin:5px auto;background:var(--crema);border-radius:2px;transition:transform .25s,opacity .25s}
+.burger[aria-expanded="true"] span:nth-child(1){transform:translateY(8px) rotate(45deg)}
+.burger[aria-expanded="true"] span:nth-child(2){opacity:0}
+.burger[aria-expanded="true"] span:nth-child(3){transform:translateY(-8px) rotate(-45deg)}
+.drawer{position:fixed;inset:var(--testata) 0 0 0;z-index:89;display:flex;flex-direction:column;gap:.2rem;padding:2rem clamp(1.2rem,6vw,3rem);background:var(--forno);color:var(--crema);overflow-y:auto}
+.drawer a{font-family:var(--f-tit);font-weight:800;font-size:clamp(2.4rem,10vw,3.8rem);text-transform:uppercase;text-decoration:none;line-height:1.05;border-bottom:1px solid rgba(247,239,223,.15);padding:.15em 0}
+.drawer a.drawer__cta{margin-top:1.4rem;border:0;color:var(--focaccia);font-size:clamp(1.7rem,6.5vw,2.4rem)}
+
+/* ── apertura ── */
+.apertura{position:relative;display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);min-height:calc(100vh - var(--testata));min-height:calc(100svh - var(--testata));background:var(--crema);overflow:hidden}
+.apertura__testo{align-self:center;padding:clamp(2.2rem,5vw,4rem) clamp(1rem,3vw,3rem) clamp(2.2rem,5vw,4rem) var(--lato)}
+.apertura__eti{font-family:var(--f-tit);font-weight:700;font-size:clamp(1rem,1.5vw,1.3rem);letter-spacing:.14em;text-transform:uppercase;color:var(--terra);margin-bottom:1rem}
+.apertura__h{font-size:clamp(4.4rem,12.5vw,12.5rem);line-height:.84;font-weight:900}
+.riga{display:block;overflow:hidden;padding-top:.06em}
+.riga__in{display:block}
+.apertura__refrain{display:flex;align-items:center;gap:.5rem;margin:.6rem 0 1.2rem;font-size:clamp(2rem,4.6vw,4.2rem);line-height:1;color:var(--terra)}
+.apertura__refrain .puntini{font-size:1em}
+.apertura__p{max-width:36ch;font-size:clamp(1.12rem,1.45vw,1.35rem);line-height:1.45}
+.apertura__azioni{display:flex;flex-wrap:wrap;gap:.8rem;margin:1.4rem 0 1rem}
+.apertura__stato{display:inline-flex;align-items:center;gap:.6rem;margin:0;font-weight:700}
+.spia{width:.7em;height:.7em;border-radius:50%;background:var(--terra);box-shadow:0 0 0 4px rgba(180,83,30,.2)}
+.apertura__foto{margin:0;position:relative;overflow:hidden;min-height:420px}
+.apertura__foto img{width:100%;height:100%;object-fit:cover}
+.apertura__foto figcaption{position:absolute;left:0;bottom:0;padding:.6rem 1rem;background:rgba(43,27,20,.82);color:var(--crema);font-family:var(--f-tit);font-weight:700;letter-spacing:.08em;text-transform:uppercase;font-size:1rem}
+
+/* ── blocchi ── */
+.blocco{position:relative;overflow:hidden;padding:clamp(4rem,8vw,7.5rem) var(--lato)}
+.kicker{font-family:var(--f-tit);font-weight:700;font-size:clamp(1rem,1.5vw,1.3rem);letter-spacing:.14em;text-transform:uppercase;margin-bottom:.8rem}
+.refrain{display:flex;align-items:center;flex-wrap:wrap;gap:.35em .6em;margin:0 0 .3em;font-size:clamp(1.7rem,3.6vw,3.2rem);line-height:1}
+.refrain .puntini{font-size:.9em}
+.refrain .corsivo{font-size:1em}
+.blocco h2{margin-bottom:.35em}
+.blocco .lead{max-width:56ch;font-size:clamp(1.15rem,1.5vw,1.35rem);line-height:1.45}
+
+/* LA FOCACCIA */
+.focaccia{background:var(--carta)}
+.focaccia__testa{max-width:62rem}
+.varianti{list-style:none;margin:clamp(2rem,4vw,3.5rem) 0 0;padding:0;display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(.8rem,1.6vw,1.4rem)}
+.varianti li{position:relative}
+.varianti .shot img{width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:6px}
+.varianti h3{font-size:clamp(1.5rem,2.4vw,2rem);margin:.5rem 0 .1rem;font-weight:800}
+.varianti p{margin:0;font-size:1rem;opacity:.8}
+.varianti li:first-child{grid-column:span 2;grid-row:span 2}
+.varianti li:first-child .shot img{aspect-ratio:1/1;height:100%}
+.varianti li:first-child h3{font-size:clamp(2rem,3.2vw,2.8rem)}
+.shot{display:block;width:100%;padding:0;border:0;background:none;cursor:zoom-in;text-align:left}
+
+/* E NON SOLO FOCACCIA — blocco pieno terracotta */
+.nonsolo{background:var(--terra);color:var(--crema)}
+.nonsolo .refrain{color:var(--olio)}
+.nonsolo .puntini i:nth-child(2){background:var(--crema)}
+.altri{list-style:none;margin:clamp(2rem,4vw,3.5rem) 0 0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(.8rem,1.6vw,1.4rem)}
+.altri li{background:rgba(43,27,20,.22);border-radius:8px;overflow:hidden}
+.altri .shot img{width:100%;aspect-ratio:4/3;object-fit:cover}
+.altri__t{padding:.9rem 1rem 1.1rem}
+.altri h3{font-size:clamp(1.7rem,2.6vw,2.3rem);margin-bottom:.15em;color:#fff}
+.altri p{margin:0;font-size:1rem;opacity:.9}
+.altri li.altri__testo{display:flex;align-items:flex-end;background:var(--forno)}
+.altri li.altri__testo .altri__t{padding:1.4rem 1.2rem}
+.altri li.altri__testo h3{font-size:clamp(2rem,3.4vw,3rem);color:var(--focaccia)}
+
+/* LA SERA DEL TEATRO — blocco scuro */
+.teatro{background:radial-gradient(60% 40% at 90% 0%,rgba(227,182,90,.18),transparent 70%),var(--forno);color:var(--crema)}
+.teatro .refrain{color:var(--focaccia)}
+.teatro__griglia{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:clamp(2rem,5vw,5rem);align-items:start}
+.teatro .lead b{color:var(--focaccia)}
+.stasera{background:var(--crema);color:var(--forno);border-radius:10px;padding:clamp(1.2rem,2.4vw,2rem);border-top:10px solid var(--terra)}
+.stasera__eti{font-family:var(--f-tit);font-weight:700;letter-spacing:.14em;text-transform:uppercase;font-size:1rem;color:var(--terra);margin:0 0 .3rem}
+.stasera__giorno{font-family:var(--f-tit);font-weight:900;font-size:clamp(2.4rem,5vw,4.2rem);text-transform:uppercase;line-height:.95;margin:0}
+.stasera__ore{font-family:var(--f-tit);font-weight:800;font-size:clamp(2rem,4.4vw,3.6rem);line-height:1;margin:.15em 0 .3em;color:var(--terra)}
+.stasera__stato{margin:0 0 1rem;font-weight:700}
+.programma{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.programma li{text-align:center;padding:.5rem .1rem;border-radius:6px;background:rgba(43,27,20,.07);font-family:var(--f-tit);font-weight:700;line-height:1.1}
+.programma li b{display:block;font-size:1.15rem;letter-spacing:.04em}
+.programma li span{display:block;font-size:.85rem;opacity:.8}
+.programma li.is-sera{background:var(--focaccia)}
+.programma li.is-today{outline:3px solid var(--terra);outline-offset:-3px}
+.programma li.is-chiuso{opacity:.55}
+
+/* IL GIORNO DELLA LAUREA — blocco olio */
+.laurea{background:var(--olio)}
+.laurea .refrain{color:var(--terra)}
+.laurea__griglia{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:clamp(2rem,5vw,5rem);align-items:center}
+.laurea__foto{display:grid;grid-template-columns:1.2fr .8fr;gap:.8rem}
+.laurea__foto .shot:first-child{grid-row:span 2}
+.laurea__foto img{width:100%;height:100%;object-fit:cover;border-radius:6px}
+.laurea__foto .shot:first-child img{aspect-ratio:4/5}
+.laurea__foto .shot:not(:first-child) img{aspect-ratio:4/3}
+.laurea__tel{display:inline-block;margin-top:.4rem;font-family:var(--f-tit);font-weight:900;font-size:clamp(2.6rem,6vw,4.6rem);line-height:1;color:var(--forno);text-decoration:none}
+.laurea__tel:hover{color:var(--terra)}
+
+/* E NON SOLO QUI — asporto e consegna */
+.asporto{background:var(--carta)}
+.asporto__griglia{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(2rem,5vw,5rem);align-items:center}
+.asporto .shot img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:6px}
+.modi{list-style:none;margin:1.4rem 0 0;padding:0;display:grid;gap:.6rem}
+.modi li{display:grid;grid-template-columns:auto 1fr;gap:.9rem;align-items:start;padding:.9rem 1rem;background:#fff;border-radius:8px;border-left:6px solid var(--terra)}
+.modi b{font-family:var(--f-tit);font-weight:800;font-size:1.6rem;text-transform:uppercase;line-height:1}
+.modi span{font-size:1.02rem}
+
+/* FEDERICO E ROBERTA */
+.noi{background:var(--terra);color:var(--crema)}
+.noi__griglia{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(2rem,5vw,5rem);align-items:center}
+.noi h2{color:#fff}
+.noi .lead{max-width:48ch}
+.noi__cit{margin:1.2rem 0 0;padding-left:1rem;border-left:5px solid var(--focaccia)}
+.noi__cit p{font-family:var(--f-cor);font-size:clamp(1.8rem,3.4vw,2.8rem);line-height:1.1;margin:0 0 .2em;color:var(--olio)}
+.noi__cit footer{font-size:.98rem;opacity:.9}
+.noi__foto{display:grid;grid-template-columns:1fr 1fr;gap:.8rem}
+.noi__foto .shot:first-child{grid-column:span 2}
+.noi__foto img{width:100%;object-fit:cover;border-radius:6px}
+.noi__foto .shot:first-child img{aspect-ratio:16/8}
+.noi__foto .shot:not(:first-child) img{aspect-ratio:4/3}
+
+/* DOVE E ORARI */
+.dove{background:var(--crema)}
+.dove__griglia{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:clamp(2rem,5vw,5rem);align-items:start}
+.dove h2{font-size:clamp(2.8rem,7vw,6rem)}
+.dove__ind{font-family:var(--f-tit);font-weight:800;font-size:clamp(1.9rem,3.4vw,3rem);line-height:1;text-transform:uppercase;margin:.2em 0 .4em}
+.dove__tel{font-family:var(--f-tit);font-weight:800;font-size:2.1rem;color:var(--terra);text-decoration:none}
+.dove__no{list-style:none;margin:1rem 0 1.2rem;padding:0}
+.dove__no li{position:relative;padding:.45rem 0 .45rem 1.8rem;border-top:1px solid rgba(36,26,20,.15)}
+.dove__no li::before{content:"";position:absolute;left:0;top:.95rem;width:12px;height:12px;border-radius:50%;background:var(--rosso)}
+.dove__mappa iframe{display:block;width:100%;height:420px;min-height:360px;border:0;border-radius:8px;border-top:10px solid var(--forno)}
+.orari__tab{width:100%;border-collapse:collapse;border-top:6px solid var(--forno);margin-top:1rem}
+.orari__tab th,.orari__tab td{padding:.5rem 0;border-bottom:1px solid rgba(36,26,20,.18);text-align:left;font-family:var(--f-tit);font-weight:800;font-size:clamp(1.5rem,2.6vw,2.2rem);text-transform:uppercase;line-height:1}
+.orari__tab td{text-align:right;letter-spacing:.02em}
+.orari__tab tr.is-today th,.orari__tab tr.is-today td{color:var(--terra)}
+.orari__tab tr.is-today th::before{content:"";display:inline-block;width:.45em;height:.45em;margin-right:.35em;border-radius:50%;background:var(--terra);vertical-align:.1em}
+
+/* DOMANDE */
+.domande{background:var(--carta)}
+.domande h2{font-size:clamp(2.6rem,6vw,5rem);margin-bottom:.5em}
+.domande__lista{max-width:60rem;border-top:3px solid var(--forno)}
+.domande details{border-bottom:3px solid var(--forno)}
+.domande summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;gap:1rem;padding:1rem 0 .85rem;font-family:var(--f-tit);font-weight:800;font-size:clamp(1.5rem,2.8vw,2.2rem);text-transform:uppercase;line-height:1}
+.domande summary::-webkit-details-marker{display:none}
+.domande summary::after{content:"+";font-size:1.2em;line-height:.8;color:var(--terra)}
+.domande details[open] summary::after{content:"–"}
+.domande details p{max-width:60ch;padding-bottom:1.1rem;font-size:1.12rem}
+
+/* piede */
+.piede{padding:clamp(3rem,6vw,5rem) var(--lato) calc(clamp(3rem,6vw,5rem) + 60px);background:var(--forno);color:var(--crema);text-align:center}
+.piede__n{font-family:var(--f-tit);font-weight:900;font-size:clamp(2.4rem,6vw,4.4rem);line-height:1;text-transform:uppercase;margin-bottom:.1em}
+.piede__c{font-family:var(--f-cor);font-size:clamp(1.4rem,3vw,2.2rem);color:var(--focaccia);margin-bottom:.8em}
+.piede__d{font-size:1.1rem}
+.piede__b{font-size:.92rem;opacity:.7;max-width:64ch;margin:1.4rem auto 0}
+
+/* barra mobile */
+.barra{display:none}
+
+/* lightbox */
+.lightbox{position:fixed;inset:0;z-index:200;display:grid;place-items:center;padding:3vmin;background:rgba(20,12,8,.95)}
+.lightbox img{max-width:94vw;max-height:88vh;width:auto;height:auto}
+.lightbox__x{position:absolute;top:.6rem;right:.9rem;width:48px;height:48px;background:none;border:0;color:#fff;font-size:2.6rem;line-height:1;cursor:pointer}
+
+/* ── responsive ── */
+@media (max-width:960px){
+  .nav{display:none}
+  .burger{display:block}
+  .testata .bottone{display:none}
+  .marchio__c{display:none}
+  .apertura{grid-template-columns:1fr}
+  .apertura__testo{padding:2.2rem var(--lato) 1.8rem}
+  .apertura__foto{min-height:0;height:58vw}
+  .varianti{grid-template-columns:repeat(2,1fr)}
+  .varianti li:first-child{grid-column:span 2;grid-row:auto}
+  .varianti li:first-child .shot img{aspect-ratio:16/10;height:auto}
+  .altri{grid-template-columns:repeat(2,1fr)}
+  .teatro__griglia,.laurea__griglia,.asporto__griglia,.noi__griglia,.dove__griglia{grid-template-columns:1fr}
+  .programma{grid-template-columns:repeat(7,1fr)}
+}
+@media (max-width:640px){
+  body{font-size:1.05rem}
+  .varianti,.altri{grid-template-columns:1fr 1fr}
+  .altri li.altri__testo{grid-column:span 2}
+  .programma{grid-template-columns:repeat(4,1fr)}
+  .laurea__foto{grid-template-columns:1fr 1fr}
+  .laurea__foto .shot:first-child{grid-column:span 2;grid-row:auto}
+  .laurea__foto .shot:first-child img{aspect-ratio:4/3}
+  .barra{display:grid;grid-template-columns:repeat(4,1fr);position:fixed;left:0;right:0;bottom:0;z-index:80;background:var(--forno);border-top:3px solid var(--focaccia);transform:translateY(110%);transition:transform .3s}
+  .barra.is-visible{transform:none}
+  .barra a{padding:.75rem .2rem .6rem;text-align:center;font-family:var(--f-tit);font-weight:700;font-size:1.2rem;letter-spacing:.05em;text-transform:uppercase;text-decoration:none;color:var(--crema);border-right:1px solid rgba(247,239,223,.15)}
+  .barra a:first-child{background:var(--terra);color:#fff}
+}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important;scroll-behavior:auto !important}
+  .reveal{opacity:1 !important;transform:none !important}
+}
